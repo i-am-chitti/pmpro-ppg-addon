@@ -14,4 +14,4 @@ define( 'PMPRO_UPIGATEWAY_PATH', untrailingslashit( plugin_dir_path( __FILE__ ) 
 define( 'PMPRO_UPIGATEWAY_URL', untrailingslashit( plugin_dir_url( __FILE__ ) ) );
 
 // load payment gateway class.
-require_once PMPRO_UPIGATEWAY_PATH . '/inc/classes/class-pmprogateway-upi.php';
+require_once PMPRO_UPIGATEWAY_PATH . '/inc/plugin.php';
