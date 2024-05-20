@@ -7,11 +7,9 @@
 
 // Bail if PMPro or the payppg add on is not active.
 if ( ! defined( 'PMPRO_DIR' ) || ! defined( 'PMPRO_PPG_PATH' ) ) {
-	error_log( __( 'Paid Memberships Pro and the PMPro Payppg Add On must be activated for the PMPro Payppg ITN handler to function.', 'pmpro-ppg' ) );
 	exit;
 }
 
-error_log( 'PMPro payppg ITN handler initiated.' );
 $order_id = '';
 if ( isset( $_GET['order_id'] ) ) {
 	$order_id = sanitize_text_field( wp_unslash( $_GET['order_id'] ) );

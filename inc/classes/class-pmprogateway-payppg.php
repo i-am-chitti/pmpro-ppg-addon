@@ -388,7 +388,6 @@ class PMProGateway_payppg extends PMProGateway {
 	 * @return void
 	 */
 	public static function wp_ajax_pmpro_payppg_handler() {
-		error_log('payppg_handler ajax intercepted');
 		require_once PMPRO_PPG_PATH . '/inc/services/payppg_handler.php';
 		exit;
 	}
