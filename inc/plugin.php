@@ -5,15 +5,13 @@
  * @package upi-gateway-pmpro-addon
  */
 
-require_once PMPRO_UPIGATEWAY_PATH . '/inc/classes/class-pmprogateway-upi.php';
-
 /**
  * Bootstrap function.
  *
  * @return void
  */
 function bootstrap() {
-	add_action( 'init', array( 'PMProGateway_UPI', 'init' ) );
+	add_action( 'init', array( 'PMProGateway_payppg', 'init' ) );
 }
 
 // Kick off.
