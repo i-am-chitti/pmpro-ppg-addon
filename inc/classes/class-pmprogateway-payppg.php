@@ -9,6 +9,8 @@
 // phpcs:disable WordPress.DB.DirectDatabaseQuery.NoCaching
 // phpcs:disable WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 
+const REST_API_NAMESPACE = 'pmpro-ppg/v1';
+
 /**
  * PmProGateway_UPI Class
  *
@@ -65,8 +67,7 @@ class PMProGateway_payppg extends PMProGateway {
 			20
 		);
 
-		add_action( 'wp_ajax_nopriv_pmpro_payppg_handler', array( 'PMProGateway_payppg', 'wp_ajax_pmpro_payppg_handler' ) );
-		add_action( 'wp_ajax_pmpro_payppg_handler', array( 'PMProGateway_payppg', 'wp_ajax_pmpro_payppg_handler' ) );
+		add_action( 'rest_api_init', array( 'PMProGateway_payppg', 'register_rest_endpoints' ) );
 	}
 
 	/**
@@ -345,7 +346,10 @@ class PMProGateway_payppg extends PMProGateway {
 			'order_id'        => $order->code,
 			'amount'          => $amount,
 			'remark1'         => 'Membership',
-			'redirect_url'    => urlencode( admin_url( 'admin-ajax.php' ) . '?action=pmpro_payppg_handler&order_id=' . $order->code ),
+			'redirect_url'    => urlencode( add_query_arg( [
+				'order_id' => $order->code,
+				], rest_url( 'pmpro-ppg/v1/payppg-handler' ) )
+			),
 		);
 
 		$ppg_url = get_option( 'pmpro_payppg_proxy_url' );
@@ -382,12 +386,24 @@ class PMProGateway_payppg extends PMProGateway {
 	}
 
 	/**
-	 * Send traffic to wp-admin/admin-ajax.php?action=pmpro_payppg_handler
+	 * Send traffic to payppg handler.
 	 *
 	 * @return void
 	 */
-	public static function wp_ajax_pmpro_payppg_handler() {
+	public static function payppg_handler() {
 		require_once PMPRO_PPG_PATH . '/inc/services/payppg_handler.php';
 		exit;
+	}
+
+	public static function register_rest_endpoints() {
+		register_rest_route(
+			REST_API_NAMESPACE,
+			'/payppg-handler',
+			array(
+				'methods'  => 'GET',
+				'callback' => array( 'PMProGateway_payppg', 'payppg_handler' ),
+				'permission_callback' => '__return_true',
+			)
+		);
 	}
 }

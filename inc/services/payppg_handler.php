@@ -13,6 +13,10 @@ if ( ! defined( 'PMPRO_DIR' ) || ! defined( 'PMPRO_PPG_PATH' ) ) {
 $order_id = '';
 if ( isset( $_GET['order_id'] ) ) {
 	$order_id = sanitize_text_field( wp_unslash( $_GET['order_id'] ) );
+} else {
+	error_log( 'Order ID not found.' );
+	wp_die( 'Order ID not found.' );
+	exit;
 }
 
 $is_payment_successful = false;
