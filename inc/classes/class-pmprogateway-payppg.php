@@ -249,8 +249,7 @@ class PMProGateway_payppg extends PMProGateway {
 			}
 			?>
 			>
-				<input type="hidden" name="submit-checkout" value="1" />
-					<?php echo '<strong>' . esc_html_e( 'NOTE:', 'pmpro-ppg' ) . '</strong> ' . esc_html_e( 'if changing a subscription it may take a minute or two to reflect.', 'pmpro-ppg' ); ?>
+			<input type="hidden" name="submit-checkout" value="1" />
 			</span>
 		</div>
 		<?php
