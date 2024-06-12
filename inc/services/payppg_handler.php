@@ -56,6 +56,32 @@ $membership_level = $morder->getMembershipLevel();
 $user = $morder->getUser();
 if ( $is_payment_successful ) {
 	// Success.
+
+	// fix expiration date
+	if ( ! empty( $morder->membership_level->expiration_number ) ) {
+		$enddate = "'" . date( 'Y-m-d', strtotime( '+ ' . $morder->membership_level->expiration_number . ' ' . $morder->membership_level->expiration_period ) ) . "'";
+	} else {
+		$enddate = 'NULL';
+	}
+
+	// set the start date to current_time('timestamp') but allow filters
+	$startdate = apply_filters( 'pmpro_checkout_start_date', "'" . current_time( 'mysql' ) . "'", $morder->user_id, $morder->membership_level );
+	// custom level to change user to
+	$custom_level = array(
+		'user_id' => $morder->user_id,
+		'membership_id' => $morder->membership_level->id,
+		'code_id' => '',
+		'initial_payment' => $morder->membership_level->initial_payment,
+		'billing_amount' => $morder->membership_level->billing_amount,
+		'cycle_number' => $morder->membership_level->cycle_number,
+		'cycle_period' => $morder->membership_level->cycle_period,
+		'billing_limit' => $morder->membership_level->billing_limit,
+		'trial_amount' => $morder->membership_level->trial_amount,
+		'trial_limit' => $morder->membership_level->trial_limit,
+		'startdate' => $startdate,
+		'enddate' => $enddate,
+	);
+
 	$changed_membership = pmpro_changeMembershipLevel( $morder->membership_id, $morder->user_id, 'active' );
 	if ( $changed_membership ) {
 		$morder->status = 'success';
